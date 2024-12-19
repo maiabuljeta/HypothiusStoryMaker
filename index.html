@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYPOTHIUS STORYMAKER</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+        }
+        .main-content {
+            flex: 3;
+            padding-right: 20px;
+        }
+        .sidebar {
+            flex: 1;
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        select, input {
+            margin-bottom: 10px;
+            padding: 5px;
+            width: 100%;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+    </style>
+<script defer data-domain="hypothiusstorymaker.tiiny.site" src="https://analytics.tiiny.site/js/plausible.js"></script><script type="text/javascript" src="https://tiiny.host/ad-script.js"></script></head>
+<body>
+    <div class="main-content">
+        <h1>HYPOTHIUS STORYMAKER</h1>
+        <p>Use this tool to help you with the storytelling for any creative project</p>
+        
+        <input type="text" id="search" placeholder="Search word lists">
+        
+        <select id="category">
+            <option value="">Select a category</option>
+        </select>
+        
+        <ul id="wordList"></ul>
+    </div>
+    
+    <div class="sidebar">
+        <h3>Story key words:</h3>
+        <p>but then, all of a sudden, however.</p>
+        <p>Also, don't forget, conflict on every page. Think of what can go wrong even from the simplest decisions the character makes.</p>
+        <p>Surprise and setting up unanswered clues is a wonderful way to have fun and create very interesting things.</p>
+        <p>Utilizing adjectives in front of every description can be a great way to add emotional impact to your story.</p>
+        <p>Write the things that give you joy. All external feedback is opinion, and only take back the feedback you need.</p>
+        <p>There is no such thing as bad art.</p>
+        <p>And have fun with metaphor.</p>
+    </div>
+
+    <script>
+        const words = {
+            first_names: ["Emma", "Liam", "Olivia", "Noah", "Ava", "Ethan", "Sophia", "Mason", "Isabella", "William", "Mia", "James", "Charlotte", "Benjamin", "Amelia", "Lucas", "Harper", "Henry", "Evelyn", "Alexander"],
+            locations: ["Paris", "Tokyo", "New York", "London", "Sydney", "Rome", "Cairo", "Rio de Janeiro", "Moscow", "Berlin", "Mumbai", "Toronto", "Dubai", "Amsterdam", "Seoul", "Bangkok", "Madrid", "Singapore", "Stockholm", "Vancouver"],
+            adjectives: ["Happy", "Brave", "Clever", "Gentle", "Honest", "Kind", "Loyal", "Patient", "Sincere", "Wise", "Cheerful", "Diligent", "Elegant", "Friendly", "Generous", "Humble", "Innovative", "Jovial", "Keen", "Lively"],
+            animals: ["Lion", "Elephant", "Giraffe", "Dolphin", "Penguin", "Tiger", "Koala", "Kangaroo", "Panda", "Gorilla", "Cheetah", "Zebra", "Rhino", "Hippo", "Crocodile", "Monkey", "Bear", "Wolf", "Fox", "Deer"],
+            colors: ["Red", "Blue", "Green", "Yellow", "Purple", "Orange", "Pink", "Brown", "Gray", "Black", "White", "Turquoise", "Magenta", "Cyan", "Lavender", "Maroon", "Navy", "Olive", "Teal", "Indigo"],
+            foods: ["Pizza", "Sushi", "Pasta", "Burger", "Salad", "Taco", "Curry", "Steak", "Soup", "Sandwich", "Sashimi", "Risotto", "Paella", "Dim Sum", "Falafel", "Pho", "Ramen", "Burrito", "Lasagna", "Kebab"],
+            sports: ["Soccer", "Basketball", "Tennis", "Golf", "Swimming", "Volleyball", "Baseball", "Cricket", "Rugby", "Cycling", "Skiing", "Surfing", "Boxing", "Gymnastics", "Athletics", "Martial Arts", "Badminton", "Table Tennis", "Hockey", "Rowing"],
+            professions: ["Teacher", "Doctor", "Engineer", "Chef", "Lawyer", "Artist", "Nurse", "Pilot", "Scientist", "Writer", "Musician", "Architect", "Photographer", "Accountant", "Firefighter", "Police Officer", "Journalist", "Actor", "Designer", "Farmer"],
+            weather: ["Sunny", "Rainy", "Cloudy", "Windy", "Snowy", "Foggy", "Stormy", "Humid", "Dry", "Freezing", "Hot", "Cool", "Mild", "Breezy", "Chilly", "Frosty", "Misty", "Drizzly", "Hazy", "Muggy"],
+            emotions: ["Joy", "Sadness", "Anger", "Fear", "Surprise", "Disgust", "Love", "Hate", "Excitement", "Anxiety", "Contentment", "Jealousy", "Pride", "Shame", "Guilt", "Hope", "Boredom", "Confusion", "Amusement", "Frustration"],
+            body_parts: ["Head", "Arms", "Legs", "Hands", "Feet", "Eyes", "Ears", "Nose", "Mouth", "Fingers", "Toes", "Shoulders", "Knees", "Elbows", "Neck", "Chest", "Back", "Hips", "Stomach", "Tongue"],
+            vehicles: ["Car", "Bicycle", "Bus", "Train", "Airplane", "Boat", "Motorcycle", "Truck", "Helicopter", "Scooter", "Subway", "Tram", "Van", "Taxi", "Ferry", "Ambulance", "Fire Engine", "Police Car", "Limousine", "Tractor"],
+            plants: ["Rose", "Oak", "Sunflower", "Cactus", "Fern", "Daisy", "Pine", "Tulip", "Orchid", "Bamboo", "Lily", "Maple", "Palm", "Lavender", "Ivy", "Aloe", "Moss", "Dandelion", "Grass", "Mushroom"],
+            music: ["Rock", "Pop", "Jazz", "Classical", "Hip Hop", "Country", "Blues", "Reggae", "Electronic", "Folk", "R&B", "Metal", "Punk", "Opera", "Indie", "Techno", "Gospel", "Latin", "Alternative", "Funk"],
+            clothing: ["Shirt", "Pants", "Dress", "Jacket", "Skirt", "Socks", "Shoes", "Hat", "Scarf", "Gloves", "Sweater", "Coat", "Shorts", "Tie", "Belt", "Jeans", "Blouse", "Hoodie", "Vest", "Suit"],
+            furniture: ["Chair", "Table", "Bed", "Sofa", "Desk", "Dresser", "Bookshelf", "Cabinet", "Wardrobe", "Nightstand", "Ottoman", "Stool", "Bench", "Armchair", "Couch", "Mirror", "Lamp", "Rug", "Clock", "Curtains"],
+            tools: ["Hammer", "Screwdriver", "Wrench", "Saw", "Drill", "Pliers", "Chisel", "Level", "Measuring Tape", "Scissors", "Crowbar", "Axe", "Shovel", "Rake", "Paintbrush", "Trowel", "Clamp", "File", "Sander", "Soldering Iron"],
+            countries: ["USA", "China", "India", "Brazil", "Russia", "Japan", "Germany", "France", "UK", "Italy", "Canada", "Australia", "Spain", "Mexico", "Indonesia", "South Korea", "Turkey", "Saudi Arabia", "Argentina", "South Africa"],
+            hobbies: ["Reading", "Painting", "Gardening", "Cooking", "Photography", "Hiking", "Fishing", "Knitting", "Chess", "Dancing", "Singing", "Yoga", "Camping", "Birdwatching", "Woodworking", "Collecting", "Pottery", "Skateboarding", "Origami", "Meditation"],
+            languages: ["English", "Mandarin", "Hindi", "Spanish", "French", "Arabic", "Bengali", "Russian", "Portuguese", "Indonesian", "Urdu", "German", "Japanese", "Swahili", "Marathi", "Telugu", "Turkish", "Tamil", "Vietnamese", "Korean"],
+            character_types: ["Hero", "Villain", "Sidekick", "Mentor", "Love Interest", "Anti-Hero", "Foil", "Comic Relief", "Tragic Hero", "Femme Fatale", "Trickster", "Everyman", "Catalyst", "Guardian", "Shapeshifter", "Contagonist", "Temptress", "Wise Old Man", "Damsel in Distress", "Rebel"],
+            mythical_creatures: ["Dragon", "Unicorn", "Phoenix", "Mermaid", "Centaur", "Griffin", "Werewolf", "Vampire", "Fairy", "Troll", "Goblin", "Cyclops", "Minotaur", "Chimera", "Hydra", "Kraken", "Yeti", "Banshee", "Basilisk", "Leprechaun"],
+            natural_disasters: ["Earthquake", "Hurricane", "Tornado", "Tsunami", "Volcano", "Flood", "Wildfire", "Avalanche", "Landslide", "Blizzard", "Drought", "Hailstorm", "Sandstorm", "Cyclone", "Sinkhole", "Mudslide", "Ice Storm", "Heat Wave", "Solar Flare", "Meteor Strike"],
+            crimes: ["Theft", "Murder", "Fraud", "Kidnapping", "Arson", "Burglary", "Assault", "Forgery", "Embezzlement", "Blackmail", "Smuggling", "Hacking", "Vandalism", "Extortion", "Counterfeiting", "Espionage", "Bribery", "Identity Theft", "Piracy", "Money Laundering"],
+            historical_periods: ["Stone Age", "Bronze Age", "Iron Age", "Ancient Egypt", "Classical Greece", "Roman Empire", "Middle Ages", "Renaissance", "Age of Discovery", "Industrial Revolution", "Victorian Era", "World War I", "Roaring Twenties", "Great Depression", "World War II", "Cold War", "Space Age", "Information Age", "Digital Age", "Post-Truth Era"],
+            superpowers: ["Flight", "Invisibility", "Telekinesis", "Telepathy", "Super Strength", "Healing Factor", "Time Travel", "Shapeshifting", "Teleportation", "Energy Projection", "Mind Control", "Elemental Control", "Super Speed", "Force Field", "X-Ray Vision", "Precognition", "Intangibility", "Duplication", "Size Manipulation", "Technopathy"],
+            phobias: ["Arachnophobia", "Acrophobia", "Claustrophobia", "Agoraphobia", "Mysophobia", "Aerophobia", "Cynophobia", "Ophidiophobia", "Trypanophobia", "Social Phobia", "Hemophobia", "Aquaphobia", "Xenophobia", "Nyctophobia", "Coulrophobia", "Thalassophobia", "Glossophobia", "Entomophobia", "Ornithophobia", "Emetophobia"],
+            technology: ["Smartphone", "Laptop", "Tablet", "Smartwatch", "Virtual Reality", "Artificial Intelligence", "Blockchain", "3D Printer", "Drone", "Robot", "Internet of Things", "Quantum Computer", "Augmented Reality", "Nanotechnology", "Biometrics", "Hologram", "Cryptocurrency", "Self-driving Car", "Smart Home", "Wearable Tech"],
+            space_objects: ["Planet", "Star", "Galaxy", "Asteroid", "Comet", "Black Hole", "Nebula", "Supernova", "Quasar", "Pulsar", "Moon", "Dwarf Planet", "Exoplanet", "Meteor", "Solar System", "Constellation", "Cosmic Dust", "Dark Matter", "Neutron Star", "Wormhole"],
+            musical_instruments: ["Guitar", "Piano", "Drums", "Violin", "Flute", "Saxophone", "Trumpet", "Cello", "Harp", "Clarinet", "Accordion", "Ukulele", "Bagpipes", "Harmonica", "Trombone", "Banjo", "Synthesizer", "Xylophone", "Didgeridoo", "Theremin"],
+            art_styles: ["Impressionism", "Surrealism", "Cubism", "Abstract", "Pop Art", "Renaissance", "Baroque", "Romanticism", "Expressionism", "Art Nouveau", "Realism", "Minimalism", "Gothic", "Neoclassicism", "Dada", "Futurism", "Post-Impressionism", "Fauvism", "Art Deco", "Conceptual Art"],
+            social_media: ["Facebook", "Twitter", "Instagram", "LinkedIn", "TikTok", "Snapchat", "Pinterest", "Reddit", "YouTube", "WhatsApp", "Tumblr", "Twitch", "Telegram", "Discord", "WeChat", "Vimeo", "Medium", "Quora", "Flickr", "Mastodon"],
+            dance_styles: ["Ballet", "Hip Hop", "Salsa", "Tango", "Tap", "Contemporary", "Breakdancing", "Ballroom", "Jazz", "Flamenco", "Waltz", "Swing", "Belly Dance", "Bhangra", "Samba", "Capoeira", "Lindy Hop", "Popping", "Irish Step Dance", "Bollywood"],
+            mythologies: ["Greek", "Roman", "Norse", "Egyptian", "Celtic", "Hindu", "Chinese", "Japanese", "Aztec", "Mayan", "Native American", "African", "Polynesian", "Mesopotamian", "Persian", "Slavic", "Finnish", "Aboriginal Australian", "Inuit", "Voodoo"],
+            literary_genres: ["Romance", "Mystery", "Science Fiction", "Fantasy", "Horror", "Thriller", "Historical Fiction", "Western", "Crime", "Adventure", "Dystopian", "Steampunk", "Cyberpunk", "Magical Realism", "Gothic", "Paranormal", "Satire", "Literary Fiction", "Memoir", "Poetry"],
+            inventions: ["Wheel", "Printing Press", "Telephone", "Light Bulb", "Airplane", "Penicillin", "Computer", "Internet", "Television", "Automobile", "Steam Engine", "Compass", "Clock", "Camera", "Radio", "Refrigerator", "Microwave", "X-ray", "Telescope", "Microscope"],
+            geological_features: ["Mountain", "Volcano", "Canyon", "Glacier", "Cave", "River", "Waterfall", "Desert", "Oasis", "Geyser", "Fjord", "Plateau", "Valley", "Mesa", "Butte", "Reef", "Dune", "Gorge", "Archipelago", "Atoll"],
+medical_specialties: ["Cardiology", "Neurology", "Pediatrics", "Oncology", "Dermatology", "Orthopedics", "Psychiatry", "Radiology", "Gynecology", "Urology", "Endocrinology", "Gastroenterology", "Ophthalmology", "Anesthesiology", "Immunology", "Nephrology", "Rheumatology", "Pulmonology", "Hematology", "Geriatrics"],
+            architectural_styles: ["Gothic", "Baroque", "Art Deco", "Modernist", "Victorian", "Colonial", "Neoclassical", "Brutalist", "Romanesque", "Byzantine", "Renaissance", "Tudor", "Bauhaus", "Postmodern", "Art Nouveau", "Futurist", "Minimalist", "Deconstructivist", "Beaux-Arts", "Prairie School"],
+            ocean_life: ["Shark", "Whale", "Octopus", "Coral", "Jellyfish", "Seahorse", "Starfish", "Dolphin", "Lobster", "Clownfish", "Sea Turtle", "Crab", "Eel", "Squid", "Manta Ray", "Swordfish", "Seal", "Plankton", "Anemone", "Pufferfish"]
+        };
+
+        const categorySelect = document.getElementById('category');
+        const searchInput = document.getElementById('search');
+        const wordList = document.getElementById('wordList');
+
+        // Populate category dropdown
+        for (const category in words) {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            categorySelect.appendChild(option);
+        }
+
+        function updateWordList() {
+            const selectedCategory = categorySelect.value;
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            wordList.innerHTML = '';
+            
+            if (selectedCategory) {
+                words[selectedCategory].forEach(word => {
+                    const li = document.createElement('li');
+                    li.textContent = word;
+                    wordList.appendChild(li);
+                });
+            }
+        }
+
+        function searchCategories() {
+            const searchTerm = searchInput.value.toLowerCase();
+            categorySelect.innerHTML = '<option value="">Select a category</option>';
+            
+            for (const category in words) {
+                if (category.replace(/_/g, ' ').toLowerCase().includes(searchTerm)) {
+                    const option = document.createElement('option');
+                    option.value = category;
+                    option.textContent = category.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    categorySelect.appendChild(option);
+                }
+            }
+        }
+
+        categorySelect.addEventListener('change', updateWordList);
+        searchInput.addEventListener('input', searchCategories);
+    </script>
+</body>
+</html>
